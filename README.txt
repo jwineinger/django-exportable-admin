@@ -1,3 +1,6 @@
+=======================
+django-exportable-admin
+=======================
 This app provides a ModelAdmin which you can subclass in order to allow your
 changelist view to be exported to CSV.  This will add an "Export CSV" button to
 the top-right of the changelist. Clicking this button will export a CSV
@@ -16,7 +19,13 @@ Note: if you alter 'change_list_template' on your ModelAdmin subclass, the
 template or link to the correct url (admin:myapp_mymodel_export) by some other
 means.
 
-### Simple example:
+Examples
+--------
+
+Simple example
+~~~~~~~~~~~~~~
+
+::
 
     # myapp/admin.py
     from django.contrib import admin
@@ -27,7 +36,10 @@ means.
         list_display = ('field1','field2','field3')
     admin.site.register(MyModel, MyModelAdmin)
 
-### Complex example:
+Complex example::
+~~~~~~~~~~~~~~~~~
+
+::
 
     # myapp/admin.py
     from django.contrib import admin
@@ -44,4 +56,3 @@ means.
             return u"%.3f" % obj.float_field / 33.7
         calculated_field.short_description = 'Arbitrary Title'
     admin.site.register(MyModel, MyModelAdmin)
-
