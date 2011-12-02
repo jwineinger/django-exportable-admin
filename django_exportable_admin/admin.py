@@ -33,9 +33,8 @@ class ExportableAdmin(admin.ModelAdmin):
         if request.path.count('export'):
             response = super(ExportableAdmin, self).changelist_view(request, extra_context)
             # response is a TemplateResponse so we can change the template
-            # after it is created
             response.template_name = 'django_exportable_admin/change_list_csv.html'
-            response['Mimetype'] = 'application/octet-stream'
+            response['Content-Type'] = 'text/csv'
             response['Content-Disposition'] = 'attachment; filename=%s.csv' % slugify(self.model._meta.verbose_name)
             return response
         return super(ExportableAdmin, self).changelist_view(request, extra_context)
