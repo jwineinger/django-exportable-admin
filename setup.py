@@ -11,7 +11,7 @@ setup(
     author_email = "jay.wineinger@gmail.com",
 
     description = "An app to allow Django admin changelists to be exported to CSV",
-    long_description=open('README.txt').read(),
+    long_description=open('README.rst').read(),
 
     url = "https://github.com/jwineinger/django-exportable-admin",
     download_url = "https://github.com/jwineinger/django-exportable-admin/downloads",
