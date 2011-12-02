@@ -18,33 +18,30 @@ means.
 
 ### Simple example:
 
-```python
-# myapp/admin.py
-from django.contrib import admin
-from django_exportable_admin.admin import ExportableAdmin
-from models import MyModel
+    # myapp/admin.py
+    from django.contrib import admin
+    from django_exportable_admin.admin import ExportableAdmin
+    from models import MyModel
 
-class MyModelAdmin(ExportableAdmin):
-    list_display = ('field1','field2','field3')
-admin.site.register(MyModel, MyModelAdmin)
-```
+    class MyModelAdmin(ExportableAdmin):
+        list_display = ('field1','field2','field3')
+    admin.site.register(MyModel, MyModelAdmin)
 
 ### Complex example:
 
-```python
-# myapp/admin.py
-from django.contrib import admin
-from django_exportable_admin.admin import ExportableAdmin
-from models import MyModel
+    # myapp/admin.py
+    from django.contrib import admin
+    from django_exportable_admin.admin import ExportableAdmin
+    from models import MyModel
 
-class MyModelAdmin(ExportableAdmin):
-    list_display = ('field1','field2','calculated_field')
+    class MyModelAdmin(ExportableAdmin):
+        list_display = ('field1','field2','calculated_field')
 
-    # adjust the number of results
-    export_queryset_limit = 100
+        # adjust the number of results
+        export_queryset_limit = 100
 
-    def calculated_field(self, obj):
-        return u"%.3f" % obj.float_field / 33.7
-    calculated_field.short_description = 'Arbitrary Title'
-admin.site.register(MyModel, MyModelAdmin)
-```
+        def calculated_field(self, obj):
+            return u"%.3f" % obj.float_field / 33.7
+        calculated_field.short_description = 'Arbitrary Title'
+    admin.site.register(MyModel, MyModelAdmin)
+
