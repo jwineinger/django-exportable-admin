@@ -6,13 +6,13 @@ class ExportableAdmin(admin.ModelAdmin):
     """
     Subclass this for your own ModelAdmins to make their changelist exportable
     to CSV. Note: your subclasses cannot override change_list_template or you 
-    not get the "Export" button on your changelist page.
+    will not get the "Export CSV" button on your changelist page.
     """
     # use a custom changelist template which adds an "Export" button
     change_list_template = 'django_exportable_admin/change_list_exportable.html'
 
-    # export 1M results by default
-    export_queryset_limit = 10 ** 7
+    # export 10,000 results by default
+    export_queryset_limit = 10000
 
     def get_paginator(self, request, queryset, per_page, orphans=0, allow_empty_first_page=True):
         """
