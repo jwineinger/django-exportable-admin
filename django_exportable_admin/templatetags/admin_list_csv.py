@@ -3,6 +3,7 @@ from django.contrib.admin.templatetags.admin_list import result_headers, results
 
 register = Library()
 
+
 @register.inclusion_tag("admin/change_list_results_csv.html")
 def result_list(cl):
     """

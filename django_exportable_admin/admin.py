@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.conf.urls.defaults import patterns, url
 from django.template.defaultfilters import slugify
 
+
 class ExportableAdmin(admin.ModelAdmin):
     """
     Subclass this for your own ModelAdmins to make their changelist exportable
-    to CSV. Note: your subclasses cannot override change_list_template or you 
+    to CSV. Note: your subclasses cannot override change_list_template or you
     will not get the "Export CSV" button on your changelist page.
     """
     # use a custom changelist template which adds an "Export" button
