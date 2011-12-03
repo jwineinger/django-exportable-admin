@@ -22,8 +22,8 @@ means.
 Examples
 --------
 
-Simple example
-~~~~~~~~~~~~~~
+Simple example:
+~~~~~~~~~~~~~~~
 
 ::
 
@@ -36,8 +36,8 @@ Simple example
         list_display = ('field1','field2','field3')
     admin.site.register(MyModel, MyModelAdmin)
 
-Complex example::
-~~~~~~~~~~~~~~~~~
+Complex example:
+~~~~~~~~~~~~~~~~
 
 ::
 
