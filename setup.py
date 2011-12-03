@@ -3,7 +3,7 @@ ez_setup.use_setuptools()
 from setuptools import setup, find_packages
 setup(
     name = "django-exportable-admin",
-    version = "2.0",
+    version = "2.1",
 
     packages = find_packages(),
 
