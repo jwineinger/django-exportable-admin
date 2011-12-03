@@ -17,7 +17,7 @@ setup(
     download_url = "https://github.com/jwineinger/django-exportable-admin/downloads",
 
     install_requires = [
-        "Django >= 1.4"
+        "Django >= 1.4.0.alpha.0"
     ],
 
     include_package_data = True,
