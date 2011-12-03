@@ -4,7 +4,7 @@ from django.contrib.admin.templatetags.admin_list import result_headers, results
 register = Library()
 
 
-@register.inclusion_tag("admin/change_list_results_csv.html")
+@register.inclusion_tag("django_exportable_admin/change_list_results_csv.html")
 def result_list(cl):
     """
     Displays the headers and data list together
