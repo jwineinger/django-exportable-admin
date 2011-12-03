@@ -3,7 +3,7 @@ ez_setup.use_setuptools()
 from setuptools import setup, find_packages
 setup(
     name = "django-exportable-admin",
-    version = "2.2",
+    version = "1.0",
 
     packages = find_packages(),
 
@@ -17,7 +17,7 @@ setup(
     download_url = "https://github.com/jwineinger/django-exportable-admin/downloads",
 
     install_requires = [
-        "Django >= 1.4.0.alpha.0"
+        "Django <= 1.3"
     ],
 
     include_package_data = True,
