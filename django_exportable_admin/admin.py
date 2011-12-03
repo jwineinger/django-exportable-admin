@@ -39,6 +39,7 @@ class ExportableAdmin(admin.ModelAdmin):
             response['Content-Disposition'] = 'attachment; filename=%s.csv' % slugify(self.model._meta.verbose_name)
             return response
         info = self.model._meta.app_label, self.model._meta.module_name
+        extra_context = extra_context or {}
         extra_context['app_export_url'] = "admin:%s_%s_export" % info
         return super(ExportableAdmin, self).changelist_view(request, extra_context)
 
