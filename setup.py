@@ -5,7 +5,7 @@ setup(
     name = "django-exportable-admin",
     version = "1.0",
 
-    py_modules = ['django_exportable_admin'],
+    packages = ['django_exportable_admin'],
 
     author = "Jay Wineinger",
     author_email = "jay.wineinger@gmail.com",
