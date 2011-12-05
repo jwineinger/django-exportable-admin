@@ -1,11 +1,11 @@
 import ez_setup
 ez_setup.use_setuptools()
-from setuptools import setup, find_packages
+from distutils.core import setup
 setup(
     name = "django-exportable-admin",
     version = "2.2",
 
-    packages = find_packages(),
+    py_modules = ['django_exportable_admin'],
 
     author = "Jay Wineinger",
     author_email = "jay.wineinger@gmail.com",
@@ -16,11 +16,10 @@ setup(
     url = "https://github.com/jwineinger/django-exportable-admin",
     download_url = "https://github.com/jwineinger/django-exportable-admin/downloads",
 
-    install_requires = [
+    requires = [
         "Django >= 1.4.0.alpha.0"
     ],
 
-    include_package_data = True,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
