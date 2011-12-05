@@ -1,5 +1,3 @@
-import ez_setup
-ez_setup.use_setuptools()
 from distutils.core import setup
 setup(
     name = "django-exportable-admin",
@@ -17,7 +15,7 @@ setup(
     download_url = "https://github.com/jwineinger/django-exportable-admin/downloads",
 
     requires = [
-        "Django >= 1.4.0.alpha.0"
+        "Django (>=1.4.0a0)"
     ],
 
     classifiers=[
