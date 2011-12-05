@@ -35,6 +35,16 @@ class ExportableAdmin(admin.ModelAdmin):
             return self.paginator(queryset, self.export_queryset_limit, 0, True)
         return self.paginator(queryset, per_page, orphans, allow_empty_first_page)
 
+    def changelist_view(self, request, extra_context=None):
+        """
+        Override the changelist view so that we can provide the URL name to
+        setup the export button in the customized template.
+        """
+        info = self.model._meta.app_label, self.model._meta.module_name
+        extra_context = extra_context or {}
+        extra_context['app_export_url'] = "admin:%s_%s_export" % info
+        return super(ExportableAdmin, self).changelist_view(request, extra_context)
+
     def changelist_export_view(self, request, extra_context=None):
         """
         This method is nearly an exact copy of the standard changelist_view()
