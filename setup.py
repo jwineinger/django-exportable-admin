@@ -3,7 +3,7 @@ ez_setup.use_setuptools()
 from distutils.core import setup
 setup(
     name = "django-exportable-admin",
-    version = "1.0",
+    version = "1.1",
 
     packages = ['django_exportable_admin'],
 
