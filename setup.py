@@ -17,7 +17,7 @@ setup(
     download_url = "https://github.com/jwineinger/django-exportable-admin/downloads",
 
     requires = [
-        "Django<=1.3"
+        "Django (<=1.3)"
     ],
 
     classifiers=[
