@@ -10,6 +10,7 @@ setup(
 
     description = "An app to allow Django admin changelists to be exported to CSV",
     long_description=open('README.rst').read(),
+    data_files = [('README.rst',)],
 
     url = "https://github.com/jwineinger/django-exportable-admin",
     download_url = "https://github.com/jwineinger/django-exportable-admin/downloads",
