@@ -64,13 +64,13 @@ class ExportableAdmin(admin.ModelAdmin):
                 r'^export/csv$',
                 self.admin_site.admin_view(self.changelist_view),
                 name="%s_%s_export_csv" % info,
-                extra_context={'export_delimiter':u','},
+                kwargs={'extra_context':{'export_delimiter':u','}},
             ),
             url(
                 r'^export/pipe$',
                 self.admin_site.admin_view(self.changelist_view),
                 name="%s_%s_export_pipe" % info,
-                extra_context={'export_delimiter':u'|'},
+                kwargs={'extra_context':{'export_delimiter':u'|'}},
             )
         )
         return my_urls + urls
