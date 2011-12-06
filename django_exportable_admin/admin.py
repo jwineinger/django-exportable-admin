@@ -6,20 +6,21 @@ from django.core.urlresolvers import reverse
 
 class ExportableAdmin(admin.ModelAdmin):
     """
-    Subclass this for your own ModelAdmins to make their changelist exportable
-    to CSV. Note: your subclasses cannot override change_list_template or you
-    will not get the "Export CSV" button on your changelist page.
+    Base class which contains all of the functionality to setup admin
+    changelist export. Subclassing this class itself will do nothing unless you
+    set export_formats on your ModelAdmin instance. See the other provided
+    subclasses which are already setup for CSV, Pipe, and both.
+    
+    Note: do not override change_list_template or you will not get the
+    "Export ..." button on your changelist page.
     """
     # use a custom changelist template which adds an "Export" button
     change_list_template = 'django_exportable_admin/change_list_exportable.html'
 
     # export 10,000 results by default
     export_queryset_limit = 10000
-
-    export_formats = (
-        (u'CSV', u','),
-        (u'Pipe', u'|'),
-    )
+    
+    export_formats = tuple()
 
     def get_paginator(self, request, queryset, per_page, orphans=0, allow_empty_first_page=True):
         """
@@ -76,3 +77,38 @@ class ExportableAdmin(admin.ModelAdmin):
         ]
         my_urls = patterns('', *new_urls)
         return my_urls + urls
+
+class CSVExportableAdmin(ExportableAdmin):
+    """
+    ExportableAdmin subclass which adds export to CSV functionality.
+    
+    Note: do not override change_list_template or you will not get the
+    "Export ..." button on your changelist page.
+    """
+    export_formats = (
+        (u'CSV', u','),
+    )
+
+class PipeExportableAdmin(ExportableAdmin):
+    """
+    ExportableAdmin subclass which adds export to Pipe functionality.
+    
+    Note: do not override change_list_template or you will not get the
+    "Export ..." button on your changelist page.
+    """
+    export_formats = (
+        (u'Pipe', u'|'),
+    )
+
+class MultiExportableAdmin(ExportableAdmin):
+    """
+    ExportableAdmin subclass which adds export to CSV and Pipe
+    functionality.
+    
+    Note: do not override change_list_template or you will not get the
+    "Export ..." button on your changelist page.
+    """
+    export_formats = (
+        (u'CSV', u','),
+        (u'Pipe', u'|'),
+    )
