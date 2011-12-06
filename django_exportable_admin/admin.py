@@ -47,6 +47,7 @@ class ExportableAdmin(admin.ModelAdmin):
         it after we get the TemplateResponse back.
         """
         if extra_context and extra_context['export_delimiter']:
+            # set this attr for get_paginator()
             request.is_export_request = True
             response = super(ExportableAdmin, self).changelist_view(request, extra_context)
             # response is a TemplateResponse so we can change the template
@@ -70,7 +71,7 @@ class ExportableAdmin(admin.ModelAdmin):
             url(
                 r'^export/%s$' % format_name.lower(),
                 self.admin_site.admin_view(self.changelist_view),
-                name="admin:%s_%s_export_%s" % (app, mod, format_name.lower()),
+                name="%s_%s_export_%s" % (app, mod, format_name.lower()),
                 kwargs={'extra_context':{'export_delimiter':delimiter}},
             )
             for format_name, delimiter in self.export_formats
