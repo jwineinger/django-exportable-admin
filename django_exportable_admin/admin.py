@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.conf.urls.defaults import patterns, url
 from django.template.defaultfilters import slugify
+from django.core.urlresolvers import reverse
 
 
 class ExportableAdmin(admin.ModelAdmin):
@@ -24,6 +25,13 @@ class ExportableAdmin(admin.ModelAdmin):
             return self.paginator(queryset, self.export_queryset_limit, 0, True)
         return self.paginator(queryset, per_page, orphans, allow_empty_first_page)
 
+    def get_export_buttons(self, request):
+        info = self.model._meta.app_label, self.model._meta.module_name
+        return (
+            ('Export CSV', reverse("admin:%s_%s_export_csv" % info)),
+            ('Export Pipe', reverse("admin:%s_%s_export_pipe" % info)),
+        )
+
     def changelist_view(self, request, extra_context=None):
         """
         After 1.3, the changelist view returns a TemplateResponse, which we can
@@ -38,9 +46,10 @@ class ExportableAdmin(admin.ModelAdmin):
             response['Content-Type'] = 'text/csv'
             response['Content-Disposition'] = 'attachment; filename=%s.csv' % slugify(self.model._meta.verbose_name)
             return response
-        info = self.model._meta.app_label, self.model._meta.module_name
         extra_context = extra_context or {}
-        extra_context['app_export_url'] = "admin:%s_%s_export" % info
+        extra_context.update({
+            'export_buttons' : self.get_export_buttons(request),
+        })
         return super(ExportableAdmin, self).changelist_view(request, extra_context)
 
     def get_urls(self):
@@ -52,9 +61,16 @@ class ExportableAdmin(admin.ModelAdmin):
         my_urls = patterns(
             '',
             url(
-                r'^export/$',
+                r'^export/csv$',
                 self.admin_site.admin_view(self.changelist_view),
-                name="%s_%s_export" % info,
+                name="%s_%s_export_csv" % info,
+                extra_context={'export_delimiter':u','},
+            ),
+            url(
+                r'^export/pipe$',
+                self.admin_site.admin_view(self.changelist_view),
+                name="%s_%s_export_pipe" % info,
+                extra_context={'export_delimiter':u'|'},
             )
         )
         return my_urls + urls

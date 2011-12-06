@@ -3,7 +3,9 @@
 {% block object-tools %}
 {% if has_add_permission %}
 <ul class="object-tools">
-    <li><a href="{% url app_export_url %}" class="addlink">Export CSV</a></li>
+    {% for text,export_url in export_buttons %}
+    <li><a href="{% url export_url %}" class="addlink">{{ text }}</a></li>
+    {% endfor %}
     <li><a href="add/{% if is_popup %}?_popup=1{% endif %}" class="addlink">
         {% with cl.opts.verbose_name|escape as name %}Add {{ name }}{% endwith %}
     </a></li>
