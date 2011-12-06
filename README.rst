@@ -2,10 +2,11 @@
 django-exportable-admin
 =======================
 This app provides a ModelAdmin which you can subclass in order to allow your
-changelist view to be exported to CSV.  This will add an "Export CSV" button to
-the top-right of the changelist. Clicking this button will export a CSV
-containing the same columns and headings as your changelist view.  By default,
-up to 10,000 rows will be exported, though this can be changed easily.
+changelist view to be exported to a delimited format (default CSV).  This will
+add an "Export CSV" button to the top-right of the changelist. Clicking this
+button will export a CSV containing the same columns and headings as your
+changelist view.  By default, up to 10,000 rows will be exported, though this
+can be changed easily.
 
 Django > 1.3 is required, at which point the standard changelist_view() returns
 a TemplateResponse. This allows us to change the template used after the
@@ -13,6 +14,9 @@ response is created, so that we can output CSV instead of the standard HTML
 view.  Django <= 1.3 requires a previous version of this app in which the
 changelist_view code is duplicated and modified slightly to change the template
 and setup the response for download instead of display.
+
+Django > 1.3: https://github.com/jwineinger/django-exportable-admin
+Django <= 1.3: https://github.com/jwineinger/django-exportable-admin/tree/pre-tr
 
 Note: if you alter 'change_list_template' on your ModelAdmin subclass, the
 "Export CSV" button will not appear. You will need to add it manually to your
