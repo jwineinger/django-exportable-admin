@@ -24,10 +24,10 @@ class ExportableAdmin(admin.ModelAdmin):
 
     def get_paginator(self, request, queryset, per_page, orphans=0, allow_empty_first_page=True):
         """
-        When we are exporting, modify the paginator to return more results than
-        the default admin changelist view.
+        When we are exporting, modify the paginator to set the result limit to
+        'export_queryset_limit'.
         """
-        if request.is_export_request:
+        if hasattr(request, 'is_export_request'):
             return self.paginator(queryset, self.export_queryset_limit, 0, True)
         return self.paginator(queryset, per_page, orphans, allow_empty_first_page)
 
