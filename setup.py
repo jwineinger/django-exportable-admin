@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
     name = "django-exportable-admin",
-    version = "2.2",
+    version = "1.1",
 
     packages = ['django_exportable_admin'],
 
