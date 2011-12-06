@@ -16,20 +16,26 @@ class ExportableAdmin(admin.ModelAdmin):
     # export 10,000 results by default
     export_queryset_limit = 10000
 
+    export_formats = (
+        (u'CSV', u','),
+        (u'Pipe', u'|'),
+    )
+
     def get_paginator(self, request, queryset, per_page, orphans=0, allow_empty_first_page=True):
         """
         When we are exporting, modify the paginator to return more results than
         the default admin changelist view.
         """
-        if request.path.count('export'):
+        if request.is_export_request:
             return self.paginator(queryset, self.export_queryset_limit, 0, True)
         return self.paginator(queryset, per_page, orphans, allow_empty_first_page)
 
     def get_export_buttons(self, request):
-        info = self.model._meta.app_label, self.model._meta.module_name
+        app, mod = self.model._meta.app_label, self.model._meta.module_name
         return (
-            ('Export CSV', reverse("admin:%s_%s_export_csv" % info)),
-            ('Export Pipe', reverse("admin:%s_%s_export_pipe" % info)),
+            ('Export %s' % format_name,
+             reverse("admin:%s_%s_export_%s" % (app, mod, format_name.lower())))
+             for format_name, delimiter in self.export_formats
         )
 
     def changelist_view(self, request, extra_context=None):
@@ -39,7 +45,8 @@ class ExportableAdmin(admin.ModelAdmin):
         copy of the changelist_view to alter the template, we can simple change
         it after we get the TemplateResponse back.
         """
-        if request.path.count('export'):
+        if extra_context and extra_context['export_delimiter']:
+            request.is_export_request = True
             response = super(ExportableAdmin, self).changelist_view(request, extra_context)
             # response is a TemplateResponse so we can change the template
             response.template_name = 'django_exportable_admin/change_list_csv.html'
@@ -57,20 +64,15 @@ class ExportableAdmin(admin.ModelAdmin):
         Add a URL pattern for the export view.
         """
         urls = super(ExportableAdmin, self).get_urls()
-        info = self.model._meta.app_label, self.model._meta.module_name
-        my_urls = patterns(
-            '',
+        app, mod = self.model._meta.app_label, self.model._meta.module_name
+        new_urls = [
             url(
-                r'^export/csv$',
+                r'^export/%s$' % format_name.lower(),
                 self.admin_site.admin_view(self.changelist_view),
-                name="%s_%s_export_csv" % info,
-                kwargs={'extra_context':{'export_delimiter':u','}},
-            ),
-            url(
-                r'^export/pipe$',
-                self.admin_site.admin_view(self.changelist_view),
-                name="%s_%s_export_pipe" % info,
-                kwargs={'extra_context':{'export_delimiter':u'|'}},
+                name="admin:%s_%s_export_%s" % (app, mod, format_name.lower()),
+                kwargs={'extra_context':{'export_delimiter':delimiter}},
             )
-        )
+            for format_name, delimiter in self.export_formats
+        ]
+        my_urls = patterns('', *new_urls)
         return my_urls + urls
