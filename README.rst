@@ -46,9 +46,18 @@ Simple example:
     from django_exportable_admin.admin import CSVExportableAdmin
     from models import MyModel
 
-    class MyModelAdmin(ExportableAdmin):
-        list_display = ('field1','field2','field3')
-    admin.site.register(MyModel, MyModelAdmin)
+    class MyAdmin(CSVExportableAdmin):
+        list_display = ('name','number','decimal','url','calc')
+
+        def url(self, obj):
+            return obj.filefield.url
+
+        def calc(self, obj):
+            return obj.number * obj.decimal
+
+    admin.site.register(MyModel, MyAdmin)
+
+.. image :: button-demo.png
 
 Complex example:
 ~~~~~~~~~~~~~~~~
