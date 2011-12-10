@@ -57,7 +57,7 @@ Simple example:
 
     admin.site.register(MyModel, MyAdmin)
 
-.. image :: button-demo.png
+.. image :: https://github.com/jwineinger/django-exportable-admin/raw/master/button-demo.png
 
 Complex example:
 ~~~~~~~~~~~~~~~~
