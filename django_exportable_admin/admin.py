@@ -14,12 +14,14 @@ class ExportableAdmin(admin.ModelAdmin):
     Note: do not override change_list_template or you will not get the
     "Export ..." button on your changelist page.
     """
-    # use a custom changelist template which adds an "Export" button
+    # use a custom changelist template which adds "Export ..." button(s)
     change_list_template = 'django_exportable_admin/change_list_exportable.html'
 
     # export 10,000 results by default
     export_queryset_limit = 10000
     
+    # an iterable of 2-tuples of (format-name, format-delimiter), such as:
+    #  ((u'CSV', u','), (u'Pipe', u'|'),)
     export_formats = tuple()
 
     def get_paginator(self, request, queryset, per_page, orphans=0, allow_empty_first_page=True):
@@ -32,6 +34,13 @@ class ExportableAdmin(admin.ModelAdmin):
         return self.paginator(queryset, per_page, orphans, allow_empty_first_page)
 
     def get_export_buttons(self, request):
+        """
+        Returns a iterable of 2-tuples which contain:
+            (button text, link URL)
+
+        These will be used in the customized changelist template to output a
+        button for each export format.
+        """
         app, mod = self.model._meta.app_label, self.model._meta.module_name
         return (
             ('Export %s' % format_name,
@@ -63,10 +72,13 @@ class ExportableAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         """
-        Add a URL pattern for the export view.
+        Add URL patterns for the export formats. Really all these URLs do are 
+        set extra_context to contain the export_delimiter for the template
+        which actually generates the "CSV".
         """
         urls = super(ExportableAdmin, self).get_urls()
         app, mod = self.model._meta.app_label, self.model._meta.module_name
+        # make a URL pattern for each export format
         new_urls = [
             url(
                 r'^export/%s$' % format_name.lower(),
@@ -107,7 +119,7 @@ class MultiExportableAdmin(ExportableAdmin):
     functionality.
     
     Note: do not override change_list_template or you will not get the
-    "Export ..." button on your changelist page.
+    "Export ..." buttons on your changelist page.
     """
     export_formats = (
         (u'CSV', u','),
