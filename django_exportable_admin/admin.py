@@ -58,7 +58,7 @@ class ExportableAdmin(admin.ModelAdmin):
         copy of the changelist_view to alter the template, we can simple change
         it after we get the TemplateResponse back.
         """
-        if extra_context and extra_context['export_delimiter']:
+        if extra_context and extra_context.get('export_delimiter', None):
             # set this attr for get_paginator()
             request.is_export_request = True
             response = super(ExportableAdmin, self).changelist_view(request, extra_context)
