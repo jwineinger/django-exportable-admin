@@ -22,7 +22,10 @@ class ExportableAdmin(admin.ModelAdmin):
     
     # an iterable of 2-tuples of (format-name, format-delimiter), such as:
     #  ((u'CSV', u','), (u'Pipe', u'|'),)
-    export_formats = tuple()
+    export_formats = (
+        (u'CSV', u','),
+        (u'Tab Delimited', u'\t'),
+    )
 
     def get_paginator(self, request, queryset, per_page, orphans=0, allow_empty_first_page=True):
         """
@@ -43,7 +46,7 @@ class ExportableAdmin(admin.ModelAdmin):
         """
         app, mod = self.model._meta.app_label, self.model._meta.module_name
         return (
-            ('Export %s' % format_name,
+            ('Export as %s' % format_name,
              reverse("admin:%s_%s_export_%s" % (app, mod, format_name.lower())))
              for format_name, delimiter in self.export_formats
         )

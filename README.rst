@@ -34,6 +34,15 @@ template or link to the correct url(s) by some other means.
 Examples
 --------
 
+::
+    INSTALLED_APPS = [
+        ...
+
+        "django_exportable_admin",
+        ...
+    ]
+::
+
 Simple example:
 ~~~~~~~~~~~~~~~
 
