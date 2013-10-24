@@ -35,13 +35,13 @@ Examples
 --------
 
 ::
+
     INSTALLED_APPS = [
         ...
 
         "django_exportable_admin",
         ...
     ]
-::
 
 Simple example:
 ~~~~~~~~~~~~~~~
