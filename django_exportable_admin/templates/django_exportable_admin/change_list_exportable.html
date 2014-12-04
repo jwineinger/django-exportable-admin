@@ -1,20 +1,19 @@
 {% extends "admin/change_list.html" %}
 {% load url from future %}
 
-{% if has_add_permission %}
-{% block object-tools-items %}
-    {% for text,export_url in export_buttons %}
-    <li><a href="{{ export_url }}" class="addlink">{{ text }}</a></li>
-    {% endfor %}
-	{{ block.super }}
-{% endblock %}
-{% else %}
 {% block object-tools %}
-	<ul class="object-tools">
-    {% for text,export_url in export_buttons %}
-    <li><a href="{{ export_url }}" class="addlink">{{ text }}</a></li>
-    {% endfor %}
-	</ul>
-	{{ block.super }}
+  <ul class="object-tools">
+  {% if has_add_permission %}
+    {% block object-tools-items %}
+      {% for text, export_url in export_buttons %}
+      <li><a href="{{ export_url }}" class="addlink">{{ text }}</a></li>
+      {% endfor %}
+      {{ block.super }}
+    {% endblock %}
+  {% else %}
+      {% for text, export_url in export_buttons %}
+      <li><a href="{{ export_url }}" class="addlink">{{ text }}</a></li>
+      {% endfor %}
+  {% endif %}
+  </ul>
 {% endblock %}
-{% endif %}

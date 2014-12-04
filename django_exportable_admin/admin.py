@@ -61,11 +61,14 @@ class ExportableAdmin(admin.ModelAdmin):
         if extra_context and extra_context.get('export_delimiter', None):
             # set this attr for get_paginator()
             request.is_export_request = True
-            response = super(ExportableAdmin, self).changelist_view(request, extra_context)
+            response = super(ExportableAdmin, self).changelist_view(
+                request, extra_context)
             # response is a TemplateResponse so we can change the template
             response.template_name = 'django_exportable_admin/change_list_csv.html'
             response['Content-Type'] = 'text/csv'
-            response['Content-Disposition'] = 'attachment; filename=%s.csv' % slugify(self.model._meta.verbose_name)
+            response['Content-Disposition'] = \
+                'attachment; filename={0}.csv'.format(
+                    slugify(self.model._meta.verbose_name))
             return response
         extra_context = extra_context or {}
         extra_context.update({
