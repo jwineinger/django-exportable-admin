@@ -1,0 +1,7 @@
+*.sw[op]
+*.pyc
+.editorconfig
+.ropeproject/
+django_exportable_admin.egg-info
+build/
+dist/

@@ -12,7 +12,7 @@ def result_list(context):
     """
     cl = context['cl']
     return {'cl': cl,
-            'result_headers': list(result_headers(cl)),
-            'results': list(results(cl)),
+            'result_headers': result_headers(cl),
+            'results': results(cl),
             'export_delimiter' : context['export_delimiter'],
            }

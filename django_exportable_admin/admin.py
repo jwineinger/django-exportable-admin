@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 
@@ -10,7 +10,7 @@ class ExportableAdmin(admin.ModelAdmin):
     changelist export. Subclassing this class itself will do nothing unless you
     set export_formats on your ModelAdmin instance. See the other provided
     subclasses which are already setup for CSV, Pipe, and both.
-    
+
     Note: do not override change_list_template or you will not get the
     "Export ..." button on your changelist page.
     """
@@ -19,10 +19,13 @@ class ExportableAdmin(admin.ModelAdmin):
 
     # export 10,000 results by default
     export_queryset_limit = 10000
-    
+
     # an iterable of 2-tuples of (format-name, format-delimiter), such as:
     #  ((u'CSV', u','), (u'Pipe', u'|'),)
-    export_formats = tuple()
+    export_formats = (
+        (u'CSV', u','),
+        (u'Tab Delimited', u'\t'),
+    )
 
     def get_paginator(self, request, queryset, per_page, orphans=0, allow_empty_first_page=True):
         """
@@ -43,7 +46,7 @@ class ExportableAdmin(admin.ModelAdmin):
         """
         app, mod = self.model._meta.app_label, self.model._meta.module_name
         return (
-            ('Export %s' % format_name,
+            ('Export as %s' % format_name,
              reverse("admin:%s_%s_export_%s" % (app, mod, format_name.lower())))
              for format_name, delimiter in self.export_formats
         )
@@ -55,14 +58,17 @@ class ExportableAdmin(admin.ModelAdmin):
         copy of the changelist_view to alter the template, we can simple change
         it after we get the TemplateResponse back.
         """
-        if extra_context and extra_context['export_delimiter']:
+        if extra_context and extra_context.get('export_delimiter', None):
             # set this attr for get_paginator()
             request.is_export_request = True
-            response = super(ExportableAdmin, self).changelist_view(request, extra_context)
+            response = super(ExportableAdmin, self).changelist_view(
+                request, extra_context)
             # response is a TemplateResponse so we can change the template
             response.template_name = 'django_exportable_admin/change_list_csv.html'
             response['Content-Type'] = 'text/csv'
-            response['Content-Disposition'] = 'attachment; filename=%s.csv' % slugify(self.model._meta.verbose_name)
+            response['Content-Disposition'] = \
+                'attachment; filename={0}.csv'.format(
+                    slugify(self.model._meta.verbose_name))
             return response
         extra_context = extra_context or {}
         extra_context.update({
@@ -72,7 +78,7 @@ class ExportableAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         """
-        Add URL patterns for the export formats. Really all these URLs do are 
+        Add URL patterns for the export formats. Really all these URLs do are
         set extra_context to contain the export_delimiter for the template
         which actually generates the "CSV".
         """
@@ -94,7 +100,7 @@ class ExportableAdmin(admin.ModelAdmin):
 class CSVExportableAdmin(ExportableAdmin):
     """
     ExportableAdmin subclass which adds export to CSV functionality.
-    
+
     Note: do not override change_list_template or you will not get the
     "Export ..." button on your changelist page.
     """
@@ -105,7 +111,7 @@ class CSVExportableAdmin(ExportableAdmin):
 class PipeExportableAdmin(ExportableAdmin):
     """
     ExportableAdmin subclass which adds export to Pipe functionality.
-    
+
     Note: do not override change_list_template or you will not get the
     "Export ..." button on your changelist page.
     """
@@ -117,7 +123,7 @@ class MultiExportableAdmin(ExportableAdmin):
     """
     ExportableAdmin subclass which adds export to CSV and Pipe
     functionality.
-    
+
     Note: do not override change_list_template or you will not get the
     "Export ..." buttons on your changelist page.
     """
